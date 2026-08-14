@@ -55,6 +55,27 @@ export class BookingClient {
     );
   }
 
+  async patchBooking(
+    id: number,
+    booking: Partial<Booking>,
+    token?: string,
+    requestConfig?: AxiosRequestConfig
+  ) {
+    const config: AxiosRequestConfig = {
+      ...requestConfig,
+      headers: {
+        ...(requestConfig?.headers ?? {}),
+        ...(token ? { Cookie: `token=${token}` } : {})
+      }
+    };
+
+    return this.httpClient.put<Booking>(
+      `/booking/${id}`,
+      booking,
+      config
+    );
+  }
+
   async deleteBooking(
     id: number,
     token?: string
