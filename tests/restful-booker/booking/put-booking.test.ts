@@ -7,6 +7,7 @@ describe('PUT /booking/:id', () => {
     let bookingId: number;
     const authClient = new AuthClient();
     let token: string;
+    let bookingDeleted = false;
 
     beforeEach(async () => {
         const authResponse = await authClient.createToken({
@@ -15,25 +16,18 @@ describe('PUT /booking/:id', () => {
         });
 
         token = authResponse.data.token;
-
-        const booking =
-            BookingFactory.createBooking();
-
-        const response =
-            await bookingClient.createBooking(booking);
-
-        bookingId =
-            response.data.bookingid;
+        const booking = BookingFactory.createBooking();
+        const response = await bookingClient.createBooking(booking);
+        bookingId = response.data.bookingid;
     });
 
     afterEach(async () => {
-
-        if (bookingId) {
+        if (bookingId && !bookingDeleted) {
             await bookingClient.deleteBooking(bookingId, token);
         }
     });
 
-    it('should update an existing booking', async () => {
+    test('should update an existing booking', async () => {
         const updatedBooking = {
             firstname: 'Jane',
             lastname: 'Smith',
@@ -50,6 +44,6 @@ describe('PUT /booking/:id', () => {
 
         expect(response.status).toBe(200);
         expect(response.data).toEqual(updatedBooking);
-    
+
     });
 });

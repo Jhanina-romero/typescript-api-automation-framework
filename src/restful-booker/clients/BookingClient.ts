@@ -69,7 +69,7 @@ export class BookingClient {
       }
     };
 
-    return this.httpClient.put<Booking>(
+    return this.httpClient.patch<Booking>(
       `/booking/${id}`,
       booking,
       config
