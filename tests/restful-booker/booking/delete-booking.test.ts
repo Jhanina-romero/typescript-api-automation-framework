@@ -1,10 +1,10 @@
-import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
 import { AuthClient } from '../../../src/restful-booker/clients/AuthClient';
+import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
 import { BookingFactory } from '../../../src/factories/booking.factory';
 
-describe('GET /booking/{id}', () => {
+describe('DELETE /booking/:id', () => {
   const bookingClient = new BookingClient();
-  let bookingId: number;
+  let bookingId: number | undefined;
   const authClient = new AuthClient();
   let token: string;
   let bookingDeleted = false;
@@ -27,16 +27,10 @@ describe('GET /booking/{id}', () => {
     }
   });
 
-  test('should return booking information', async () => {
-    const response = await bookingClient.getBooking(bookingId);
+  test('should delete an existing booking', async () => {
+    const response = await bookingClient.deleteBooking(bookingId!, token);
 
-    expect(response.status).toBe(200);
-
-    expect(response.data).toHaveProperty('firstname');
-    expect(response.data).toHaveProperty('lastname');
-    expect(response.data).toHaveProperty('totalprice');
-    expect(response.data).toHaveProperty('depositpaid');
-    expect(response.data).toHaveProperty('bookingdates');
+    expect(response.status).toBe(201);
+    bookingDeleted = true;
   });
-
 });
