@@ -1,9 +1,12 @@
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
 import { TestDataManager } from '../../../src/utils/TestDataManager';
+import { JsonSchemaValidator } from '../../../src/validator/JsonSchemaValidator';
+import { deleteBookingSchema } from '../../../src/restful-booker/schemas/delete-booking.schema';
 
 describe('DELETE /booking/:id', () => {
   const bookingClient = new BookingClient();
   const testDataManager = new TestDataManager();
+  const validator = new JsonSchemaValidator();
   let bookingId: number | undefined;
   let token: string;
   let bookingDeleted = false;
@@ -22,6 +25,7 @@ describe('DELETE /booking/:id', () => {
     const response = await bookingClient.deleteBooking(bookingId!, token);
 
     expect(response.status).toBe(201);
+    validator.validate(response.data, deleteBookingSchema);
     bookingDeleted = true;
   });
 });

@@ -1,9 +1,12 @@
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
 import { TestDataManager } from '../../../src/utils/TestDataManager';
+import { JsonSchemaValidator } from '../../../src/validator/JsonSchemaValidator';
+import { bookingSchema } from '../../../src/restful-booker/schemas/booking.schema';
 
 describe('GET /booking/{id}', () => {
   const bookingClient = new BookingClient();
   const testDataManager = new TestDataManager();
+  const validator = new JsonSchemaValidator();
   let bookingId: number | undefined;
   let token: string;
 
@@ -21,11 +24,8 @@ describe('GET /booking/{id}', () => {
     const response = await bookingClient.getBooking(bookingId!);
 
     expect(response.status).toBe(200);
-    expect(response.data).toHaveProperty('firstname');
-    expect(response.data).toHaveProperty('lastname');
-    expect(response.data).toHaveProperty('totalprice');
-    expect(response.data).toHaveProperty('depositpaid');
-    expect(response.data).toHaveProperty('bookingdates');
+    console.log(response.data);
+    validator.validate(response.data, bookingSchema);
   });
 
 });

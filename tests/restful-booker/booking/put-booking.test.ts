@@ -1,9 +1,12 @@
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
 import { TestDataManager } from '../../../src/utils/TestDataManager';
+import { JsonSchemaValidator } from '../../../src/validator/JsonSchemaValidator';
+import { bookingSchema } from '../../../src/restful-booker/schemas/booking.schema';
 
 describe('PUT /booking/:id', () => {
     const testDataManager = new TestDataManager();
     const bookingClient = new BookingClient();
+    const validator = new JsonSchemaValidator();
     let bookingId: number;
     let token: string;
 
@@ -34,6 +37,7 @@ describe('PUT /booking/:id', () => {
 
         expect(response.status).toBe(200);
         expect(response.data).toEqual(updatedBooking);
+        validator.validate(response.data, bookingSchema);
 
     });
 });
