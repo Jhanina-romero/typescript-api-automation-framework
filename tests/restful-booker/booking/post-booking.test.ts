@@ -1,34 +1,24 @@
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
-import { AuthClient } from '../../../src/restful-booker/clients/AuthClient';
-import { BookingFactory } from '../../../src/factories/booking.factory';
+import { TestDataManager } from '../../../src/utils/TestDataManager';
 
 describe('POST /booking', () => {
     const bookingClient = new BookingClient();
-    let bookingId: number;
-    let response: any;
-    const authClient = new AuthClient();
+    const testDataManager = new TestDataManager();
+    let bookingId: number | undefined;
     let token: string;
-    let bookingDeleted = false;
 
     beforeEach(async () => {
-        const authResponse = await authClient.createToken({
-            username: 'admin',
-            password: 'password123'
-        });
-
-        token = authResponse.data.token;
-        const booking = BookingFactory.createBooking();
-        response = await bookingClient.createBooking(booking);
-        bookingId = response.data.bookingid;
+        token = await testDataManager.createAuthToken('admin', 'password123');
+        await testDataManager.createBooking();
+        bookingId = await testDataManager.getBookingId() as number;
     });
 
     afterEach(async () => {
-        if (bookingId && !bookingDeleted) {
-            await bookingClient.deleteBooking(bookingId, token);
-        }
+        testDataManager.cleanup();
     });
 
     test('should create a new booking', async () => {
+        const response = await testDataManager.getBookingResponse();
         expect(response.status).toBe(200);
     });
 });

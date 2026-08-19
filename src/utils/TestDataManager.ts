@@ -8,6 +8,7 @@ export class TestDataManager {
     private token: string | null = null;
     private bookingId: number | null = null;
     private bookingDeleted = false;
+    private response: any;
 
     constructor() {
         this.authClient = new AuthClient();
@@ -27,8 +28,15 @@ export class TestDataManager {
         }
 
         const booking = BookingFactory.createBooking();
-        const response = await this.bookingClient.createBooking(booking);
-        this.bookingId = response.data.bookingid;
+        this.response = await this.bookingClient.createBooking(booking);
+        this.bookingId = this.response.data.bookingid;
+    }
+
+    async getBookingResponse(): Promise<any> {
+        if (!this.bookingId) {
+            throw new Error('Booking ID is not available. Please create a booking first.');
+        }     
+        return await this.response;
     }
 
     async getBookingId(): Promise<number | null> {
@@ -40,7 +48,7 @@ export class TestDataManager {
     }
 
     async cleanup(): Promise<void> {
-        if (this.bookingId && this.token) {
+        if (!this.bookingDeleted && this.token && this.bookingId !== null) {
             await this.bookingClient.deleteBooking(this.bookingId, this.token);
             this.bookingDeleted = true;
         }

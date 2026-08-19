@@ -1,30 +1,20 @@
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
-import { AuthClient } from '../../../src/restful-booker/clients/AuthClient';
-import { BookingFactory } from '../../../src/factories/booking.factory';
+import { TestDataManager } from '../../../src/utils/TestDataManager';
 
 describe('PATCH /booking/:id', () => {
     const bookingClient = new BookingClient();
-    let bookingId: number;
-    const authClient = new AuthClient();
+    const testDataManager = new TestDataManager();
+    let bookingId: number | undefined;
     let token: string;
-    let bookingDeleted = false;
 
     beforeEach(async () => {
-        const authResponse = await authClient.createToken({
-            username: 'admin',
-            password: 'password123'
-        });
-
-        token = authResponse.data.token;
-        const booking = BookingFactory.createBooking();
-        const response = await bookingClient.createBooking(booking);
-        bookingId = response.data.bookingid;
+        token = await testDataManager.createAuthToken('admin', 'password123');
+        await testDataManager.createBooking();
+        bookingId = await testDataManager.getBookingId() as number;
     });
 
     afterEach(async () => {
-        if (bookingId && !bookingDeleted) {
-            await bookingClient.deleteBooking(bookingId, token);
-        }
+        testDataManager.cleanup();
     });
 
     test('should partially update an existing booking', async () => {
@@ -33,7 +23,7 @@ describe('PATCH /booking/:id', () => {
             lastname: 'UpdatedLastName'
         };
 
-        const response = await bookingClient.patchBooking(bookingId, partialUpdate, token);
+        const response = await bookingClient.patchBooking(bookingId!, partialUpdate, token);
 
         expect(response.status).toBe(200);
     });
