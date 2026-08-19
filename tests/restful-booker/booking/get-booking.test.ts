@@ -1,37 +1,26 @@
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
-import { AuthClient } from '../../../src/restful-booker/clients/AuthClient';
-import { BookingFactory } from '../../../src/factories/booking.factory';
+import { TestDataManager } from '../../../src/utils/TestDataManager';
 
 describe('GET /booking/{id}', () => {
   const bookingClient = new BookingClient();
-  let bookingId: number;
-  const authClient = new AuthClient();
+  const testDataManager = new TestDataManager();
+  let bookingId: number | undefined;
   let token: string;
-  let bookingDeleted = false;
 
   beforeEach(async () => {
-    const authResponse = await authClient.createToken({
-      username: 'admin',
-      password: 'password123'
-    });
-
-    token = authResponse.data.token;
-    const booking = BookingFactory.createBooking();
-    const response = await bookingClient.createBooking(booking);
-    bookingId = response.data.bookingid;
+    token = await testDataManager.createAuthToken('admin', 'password123');
+    await testDataManager.createBooking();
+    bookingId = await testDataManager.getBookingId() as number;
   });
 
   afterEach(async () => {
-    if (bookingId && !bookingDeleted) {
-      await bookingClient.deleteBooking(bookingId, token);
-    }
+    testDataManager.cleanup();
   });
 
   test('should return booking information', async () => {
-    const response = await bookingClient.getBooking(bookingId);
+    const response = await bookingClient.getBooking(bookingId!);
 
     expect(response.status).toBe(200);
-
     expect(response.data).toHaveProperty('firstname');
     expect(response.data).toHaveProperty('lastname');
     expect(response.data).toHaveProperty('totalprice');

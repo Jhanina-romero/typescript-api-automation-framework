@@ -1,30 +1,21 @@
-import { AuthClient } from '../../../src/restful-booker/clients/AuthClient';
 import { BookingClient } from '../../../src/restful-booker/clients/BookingClient';
-import { BookingFactory } from '../../../src/factories/booking.factory';
+import { TestDataManager } from '../../../src/utils/TestDataManager';
 
 describe('DELETE /booking/:id', () => {
   const bookingClient = new BookingClient();
+  const testDataManager = new TestDataManager();
   let bookingId: number | undefined;
-  const authClient = new AuthClient();
   let token: string;
   let bookingDeleted = false;
 
   beforeEach(async () => {
-    const authResponse = await authClient.createToken({
-      username: 'admin',
-      password: 'password123'
-    });
-
-    token = authResponse.data.token;
-    const booking = BookingFactory.createBooking();
-    const response = await bookingClient.createBooking(booking);
-    bookingId = response.data.bookingid;
+    token = await testDataManager.createAuthToken('admin', 'password123');
+    await testDataManager.createBooking();
+    bookingId = await testDataManager.getBookingId() as number;
   });
 
   afterEach(async () => {
-    if (bookingId && !bookingDeleted) {
-      await bookingClient.deleteBooking(bookingId, token);
-    }
+    testDataManager.cleanup();
   });
 
   test('should delete an existing booking', async () => {
