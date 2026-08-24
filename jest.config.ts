@@ -2,7 +2,12 @@ import type { Config } from 'jest';
 
 const config: Config = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+
+  testEnvironment: 'allure-jest/node',
+
+  testEnvironmentOptions: {
+    resultsDir: 'allure-results'
+  },
 
   roots: [
     '<rootDir>/tests'
