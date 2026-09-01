@@ -6,7 +6,7 @@ const config: Config = {
   testEnvironment: 'allure-jest/node',
 
   testEnvironmentOptions: {
-    resultsDir: 'allure-results'
+    resultsDir: process.env.ALLURE_RESULTS_DIR || 'allure-results'
   },
 
   roots: [
