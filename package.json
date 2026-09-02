@@ -10,7 +10,9 @@
     "test:coverage": "jest --coverage",
     "typecheck": "tsc --noEmit",
     "test:report": "jest && allure generate allure-results --clean -o allure-report",
-    "report": "allure open allure-report"
+    "report": "allure open allure-report",
+    "allure:report": "node scripts/generate-allure-report.js",
+    "allure:open": "node scripts/open-allure-report.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
   "homepage": "https://github.com/Jhanina-romero/typescript-api-automation-framework#readme",
   "devDependencies": {
     "@types/jest": "^30.0.0",
+    "allure-commandline": "^2.43.0",
     "allure-jest": "^3.10.2",
     "jest": "^30.4.2",
     "ts-jest": "^29.4.12",
