@@ -2,6 +2,7 @@ import { BookingClient } from '../../../src/restful-booker/clients/BookingClient
 import { TestDataManager } from '../../../src/utils/TestDataManager';
 import { JsonSchemaValidator } from '../../../src/validator/JsonSchemaValidator';
 import { bookingSchema } from '../../../src/restful-booker/schemas/booking.schema';
+import { allure } from 'allure-jest';
 
 describe('GET /booking/{id}', () => {
   const bookingClient = new BookingClient();
@@ -21,11 +22,26 @@ describe('GET /booking/{id}', () => {
   });
 
   test('should return booking information', async () => {
-    const response = await bookingClient.getBooking(bookingId!);
 
-    expect(response.status).toBe(200);
-    console.log(response.data);
-    validator.validate(response.data, bookingSchema);
+    await allure.epic('Restful Booker API');
+    await allure.feature('Booking API');
+    await allure.story('Get Booking');
+    await allure.severity('critical');
+
+    let response: Awaited<ReturnType<BookingClient['getBooking']>>;
+
+    await allure.step('Send GET request', async () => {
+      response = await bookingClient.getBooking(bookingId!);
+    });
+
+    await allure.step('Validate HTTP status', async () => {
+      expect(response.status).toBe(200);
+    });
+
+    await allure.step('Validate response schema', async () => {
+      validator.validate(response.data, bookingSchema);
+    });
+
   });
 
 });
