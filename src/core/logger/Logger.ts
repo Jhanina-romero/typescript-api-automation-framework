@@ -1,5 +1,6 @@
 import winston from 'winston';
 import { loggerConfig } from './logger.config';
+import { truncate } from './logger.utils';
 
 export interface LogRequest {
     method: string;
@@ -50,22 +51,27 @@ export class Logger {
 
     static request(data: LogRequest): void {
         this.logger.http('HTTP Request', {
-            type: 'request',
-            ...data
+            method: data.method,
+            url: data.url,
+            body: truncate(data.body, 150)
         });
     }
 
     static response(data: LogResponse): void {
         this.logger.http('HTTP Response', {
-            type: 'response',
-            ...data
+            method: data.method,
+            url: data.url,
+            status: data.status,
+            duration: data.duration
         });
     }
 
     static requestError(data: LogError): void {
         this.logger.error('HTTP Error', {
-            type: 'error',
-            ...data
+            url: data.url,
+            status: data.status,
+            message: data.message
         });
     }
+
 }

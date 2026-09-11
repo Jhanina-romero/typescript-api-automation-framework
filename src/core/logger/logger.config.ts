@@ -8,7 +8,7 @@ const consoleFormat = printf(({ timestamp, level, message }) => {
 });
 
 export const loggerConfig = {
-    level: 'http',
+    level: 'info',
     format: combine(
         timestamp(),
         json()

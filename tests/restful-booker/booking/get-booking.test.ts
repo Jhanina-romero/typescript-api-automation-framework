@@ -18,10 +18,15 @@ describe('GET /booking/{id}', () => {
   });
 
   afterEach(async () => {
-    testDataManager.cleanup();
+    await testDataManager.cleanup();
   });
 
   test('should return booking information', async () => {
+    // const response = await bookingClient.getBooking(bookingId!);
+
+    // expect(response.status).toBe(200);
+    // console.log(response.data);
+    // validator.validate(response.data, bookingSchema);
 
     await allure.epic('Restful Booker API');
     await allure.feature('Booking API');
