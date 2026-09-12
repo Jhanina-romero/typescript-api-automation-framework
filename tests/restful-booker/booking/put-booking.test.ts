@@ -2,6 +2,7 @@ import { BookingClient } from '../../../src/restful-booker/clients/BookingClient
 import { TestDataManager } from '../../../src/utils/TestDataManager';
 import { JsonSchemaValidator } from '../../../src/validator/JsonSchemaValidator';
 import { bookingSchema } from '../../../src/restful-booker/schemas/booking.schema';
+import * as allure from 'allure-js-commons';
 
 describe('PUT /booking/:id', () => {
     const testDataManager = new TestDataManager();
@@ -9,6 +10,13 @@ describe('PUT /booking/:id', () => {
     const validator = new JsonSchemaValidator();
     let bookingId: number;
     let token: string;
+
+    beforeAll(async () => {
+        await allure.epic('Restful Booker API');
+        await allure.feature('Booking API');
+        await allure.story('Update Booking');
+        await allure.severity('critical');
+    });
 
     beforeEach(async () => {
         token = await testDataManager.createAuthToken('admin', 'password123');
@@ -33,11 +41,20 @@ describe('PUT /booking/:id', () => {
             additionalneeds: 'Lunch'
         };
 
-        const response = await bookingClient.updateBooking(bookingId, updatedBooking, token);
+        let response = await bookingClient.updateBooking(bookingId, updatedBooking, token);
 
-        expect(response.status).toBe(200);
-        expect(response.data).toEqual(updatedBooking);
-        validator.validate(response.data, bookingSchema);
+        await allure.step('Send GET request', async () => {
+            response = await bookingClient.updateBooking(bookingId, updatedBooking, token);
+        });
+
+        await allure.step('Validate HTTP status', async () => {
+            expect(response.status).toBe(200);
+        });
+
+        await allure.step('Validate response schema', async () => {
+            expect(response.data).toEqual(updatedBooking);
+            validator.validate(response.data, bookingSchema);
+        });
 
     });
 });
