@@ -2,6 +2,7 @@ import { BookingClient } from '../../../src/restful-booker/clients/BookingClient
 import { TestDataManager } from '../../../src/utils/TestDataManager';
 import { JsonSchemaValidator } from '../../../src/validator/JsonSchemaValidator';
 import { deleteBookingSchema } from '../../../src/restful-booker/schemas/delete-booking.schema';
+import * as allure from 'allure-js-commons';
 
 describe('DELETE /booking/:id', () => {
   const bookingClient = new BookingClient();
@@ -10,6 +11,13 @@ describe('DELETE /booking/:id', () => {
   let bookingId: number | undefined;
   let token: string;
   let bookingDeleted = false;
+
+  beforeAll(async () => {
+    await allure.epic('Restful Booker API');
+    await allure.feature('Booking API');
+    await allure.story('Delete Booking');
+    await allure.severity('critical');
+  });
 
   beforeEach(async () => {
     token = await testDataManager.createAuthToken('admin', 'password123');
@@ -22,10 +30,19 @@ describe('DELETE /booking/:id', () => {
   });
 
   test('should delete an existing booking', async () => {
-    const response = await bookingClient.deleteBooking(bookingId!, token);
+    let response = await bookingClient.deleteBooking(bookingId!, token);
 
-    expect(response.status).toBe(201);
-    validator.validate(response.data, deleteBookingSchema);
-    bookingDeleted = true;
+    await allure.step('Send GET request', async () => {
+      response = await bookingClient.deleteBooking(bookingId!, token);
+    });
+
+    await allure.step('Validate HTTP status', async () => {
+      expect(response.status).toBe(201);
+    });
+
+    await allure.step('Validate response schema', async () => {
+      validator.validate(response.data, deleteBookingSchema);
+      bookingDeleted = true;
+    });
   });
 });

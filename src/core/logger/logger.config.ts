@@ -8,7 +8,7 @@ const consoleFormat = printf(({ timestamp, level, message }) => {
 });
 
 export const loggerConfig = {
-    level: 'http',
+    level: 'info',
     format: combine(
         timestamp(),
         json()
@@ -16,7 +16,7 @@ export const loggerConfig = {
 
     transports: [
         new transports.Console({
-            level: 'http',
+            level: 'info',
             format: combine(
                 timestamp(),
                 consoleFormat
@@ -29,7 +29,7 @@ export const loggerConfig = {
                 'logs',
                 'api.log'
             ),
-            level: 'http'
+            level: 'info'
         }),
 
         new transports.File({
