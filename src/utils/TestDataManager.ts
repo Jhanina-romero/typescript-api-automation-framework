@@ -35,7 +35,7 @@ export class TestDataManager {
     async getBookingResponse(): Promise<any> {
         if (!this.bookingId) {
             throw new Error('Booking ID is not available. Please create a booking first.');
-        }     
+        }
         return await this.response;
     }
 
@@ -45,6 +45,22 @@ export class TestDataManager {
         }
 
         return this.bookingId;
+    }
+
+    async getBookingDeleted(): Promise<boolean> {
+        if (!this.token) {
+            throw new Error('Auth token is not available. Please create an auth token first.');
+        }
+
+        return this.bookingDeleted;
+    }
+
+    async setBookingDeleted(deleted: boolean): Promise<void> {
+        if (!this.token) {
+            throw new Error('Auth token is not available. Please create an auth token first.');
+        }
+
+        this.bookingDeleted = deleted;
     }
 
     async cleanup(): Promise<void> {

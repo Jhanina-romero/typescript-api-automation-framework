@@ -37,7 +37,7 @@ describe('PATCH /booking/:id', () => {
         let response = await bookingClient.patchBooking(bookingId!, partialUpdate, token);
 
         await allure.step('Send GET request', async () => {
-            response = await bookingClient.patchBooking(bookingId!, partialUpdate, token);
+            response;
         });
 
         await allure.step('Validate HTTP status', async () => {

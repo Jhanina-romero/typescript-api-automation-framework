@@ -32,7 +32,7 @@ describe('GET /booking/{id}', () => {
     let response = await bookingClient.getBooking(bookingId!);
 
     await allure.step('Send GET request', async () => {
-      response = await bookingClient.getBooking(bookingId!);
+      response;
     });
 
     await allure.step('Validate HTTP status', async () => {
