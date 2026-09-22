@@ -33,7 +33,7 @@ describe('DELETE /booking/:id', () => {
     let response = await bookingClient.deleteBooking(bookingId!, token);
 
     await allure.step('Send GET request', async () => {
-      response = await bookingClient.deleteBooking(bookingId!, token);
+      response;
     });
 
     await allure.step('Validate HTTP status', async () => {
@@ -42,7 +42,9 @@ describe('DELETE /booking/:id', () => {
 
     await allure.step('Validate response schema', async () => {
       validator.validate(response.data, deleteBookingSchema);
-      bookingDeleted = true;
+      testDataManager.setBookingDeleted(true);
+      // testDataManager.bookingDeleted = true;
+      // bookingDeleted = true;
     });
   });
 });

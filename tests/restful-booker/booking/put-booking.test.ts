@@ -44,7 +44,7 @@ describe('PUT /booking/:id', () => {
         let response = await bookingClient.updateBooking(bookingId, updatedBooking, token);
 
         await allure.step('Send GET request', async () => {
-            response = await bookingClient.updateBooking(bookingId, updatedBooking, token);
+            response;
         });
 
         await allure.step('Validate HTTP status', async () => {
