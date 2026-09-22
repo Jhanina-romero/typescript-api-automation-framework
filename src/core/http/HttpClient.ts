@@ -5,6 +5,18 @@ import axios, {
 } from 'axios';
 
 import { config } from '../config/config';
+import { Logger } from '../logger/Logger';
+import { setupLoggingInterceptors } from './interceptors/LoggingInterceptor';
+
+interface RequestMetadata {
+    startTime: number;
+}
+
+declare module 'axios' {
+    export interface AxiosRequestConfig {
+        metadata?: RequestMetadata;
+    }
+}
 
 export class HttpClient {
 
@@ -15,9 +27,11 @@ export class HttpClient {
       baseURL: config.baseUrl,
       timeout: 10000,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
     });
+    setupLoggingInterceptors(this.client, Logger);
   }
 
   async get<T>(

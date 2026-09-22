@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from 'axios';
+
 import { HttpClient } from '../../core/http/HttpClient';
 
 import {
@@ -34,19 +36,57 @@ export class BookingClient {
 
   async updateBooking(
     id: number,
-    booking: Booking
+    booking: Booking,
+    token?: string,
+    requestConfig?: AxiosRequestConfig
   ) {
+    const config: AxiosRequestConfig = {
+      ...requestConfig,
+      headers: {
+        ...(requestConfig?.headers ?? {}),
+        ...(token ? { Cookie: `token=${token}` } : {})
+      }
+    };
+
     return this.httpClient.put<Booking>(
       `/booking/${id}`,
-      booking
+      booking,
+      config
+    );
+  }
+
+  async patchBooking(
+    id: number,
+    booking: Partial<Booking>,
+    token?: string,
+    requestConfig?: AxiosRequestConfig
+  ) {
+    const config: AxiosRequestConfig = {
+      ...requestConfig,
+      headers: {
+        ...(requestConfig?.headers ?? {}),
+        ...(token ? { Cookie: `token=${token}` } : {})
+      }
+    };
+
+    return this.httpClient.patch<Booking>(
+      `/booking/${id}`,
+      booking,
+      config
     );
   }
 
   async deleteBooking(
-    id: number
+    id: number,
+    token?: string
   ) {
     return this.httpClient.delete(
-      `/booking/${id}`
+      `/booking/${id}`,
+      token ? {
+        headers: {
+          Cookie: `token=${token}`
+        }
+      } : undefined
     );
   }
 }
