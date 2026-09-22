@@ -31,7 +31,6 @@ describe('POST /booking', () => {
 
         await allure.step('Send GET request', async () => {
             response = await testDataManager.getBookingResponse();
-            console.log('Response:', response.data);
         });
 
         await allure.step('Validate HTTP status', async () => {

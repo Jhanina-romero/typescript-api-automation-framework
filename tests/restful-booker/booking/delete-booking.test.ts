@@ -43,8 +43,6 @@ describe('DELETE /booking/:id', () => {
     await allure.step('Validate response schema', async () => {
       validator.validate(response.data, deleteBookingSchema);
       testDataManager.setBookingDeleted(true);
-      // testDataManager.bookingDeleted = true;
-      // bookingDeleted = true;
     });
   });
 });
