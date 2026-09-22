@@ -21,7 +21,42 @@ The framework includes:
 The current implementation includes automated tests for the **Restful Booker API**.
 
 ---
+## 🌐 API Under Test
 
+This framework is currently implemented against the **Restful Booker API**, a sample REST API designed for testing and learning purposes.
+
+**API:** `https://restful-booker.herokuapp.com`
+
+The automated tests cover REST API operations and validate HTTP responses, response data, and API behavior.
+
+📚 **API Documentation:**
+[Restful Booker API Documentation](https://restful-booker.herokuapp.com/apidoc/index.html)
+
+---
+
+## 📚 Technologies & Documentation
+
+This framework uses the following technologies:
+
+| Technology     | Purpose                                      | Documentation                                                    |
+| -------------- | -------------------------------------------- | ---------------------------------------------------------------- |
+| **Jest**       | Test runner, assertions, and test execution  | [Jest Documentation](https://jestjs.io/docs/getting-started)     |
+| **TypeScript** | Strongly typed test development              | [TypeScript Documentation](https://www.typescriptlang.org/docs/) |
+| **Axios**      | HTTP client for REST API requests            | [Axios Documentation](https://axios-http.com/docs/intro)         |
+| **Winston**    | Application and test logging                 | [Winston Documentation](https://github.com/winstonjs/winston)    |
+| **Allure**     | Test reporting and test result visualization | [Allure Documentation](https://allurereport.org/docs/)           |
+
+### 🔗 Main Resources
+
+* [Restful Booker API](https://restful-booker.herokuapp.com/)
+* [Restful Booker API Documentation](https://restful-booker.herokuapp.com/apidoc/index.html)
+* [Jest Documentation](https://jestjs.io/docs/getting-started)
+* [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+* [Axios Documentation](https://axios-http.com/docs/intro)
+* [Winston Documentation](https://github.com/winstonjs/winston)
+* [Allure Documentation](https://allurereport.org/docs/)
+
+---
 ## Architecture
 
 The framework follows a layered structure to separate API communication, test logic, test data, validation, and utilities.
@@ -79,23 +114,6 @@ Response
 This separation makes the framework easier to maintain and allows API clients, test data, validations, and utilities to be reused across multiple test suites.
 
 ---
-
-## 🛠️ Technology Stack
-
-| Technology     | Purpose                           |
-| -------------- | --------------------------------- |
-| TypeScript     | Strongly typed test development   |
-| Jest           | Test runner and assertions        |
-| Axios          | HTTP client for REST API requests |
-| Faker.js       | Dynamic test data generation      |
-| AJV            | JSON schema validation            |
-| dotenv         | Environment configuration         |
-| Winston        | Application/test logging          |
-| Allure         | Test reporting                    |
-| GitHub Actions | CI/CD automation                  |
-
----
-
 ## 📋 Prerequisites
 
 Before running the framework, install:
