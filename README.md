@@ -132,6 +132,22 @@ git --version
 
 ---
 
+## ⚙️ Configuration
+
+Environment-specific configuration can be managed using environment variables.
+
+Create a `.env` file required in the project root:
+
+```env
+BASE_URL=https://restful-booker.herokuapp.com
+BOOKER_USERNAME=admin
+BOOKER_PASSWORD=password123
+```
+
+Do not commit credentials, tokens, or other sensitive information to the repository.
+
+---
+
 ## Installation
 
 Clone the repository:
@@ -151,20 +167,6 @@ Install dependencies:
 ```bash
 npm install
 ```
-
----
-
-## ⚙️ Configuration
-
-Environment-specific configuration can be managed using environment variables.
-
-Create a `.env` file when required:
-
-```env
-BASE_URL=https://restful-booker.herokuapp.com
-```
-
-Do not commit credentials, tokens, or other sensitive information to the repository.
 
 ---
 
